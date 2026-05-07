@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GiroCash — Copiloto Financeiro</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
@@ -11,7 +12,7 @@
   :root{
     --gc-green:#22c55e;--gc-green-dark:#16a34a;--gc-blue:#3b82f6;--gc-blue-dark:#1d4ed8;
     --gc-dark:#0f172a;--gc-dark2:#1e293b;--gc-dark3:#334155;
-    --gc-text:#f1f5f9;--gc-text2:#94a3b8;--gc-text3:#64748b;
+    --gc-text:#f1f5f9;--gc-text2:#94a3b8;--gc-text3:#8b9eb5;
     --gc-card:#1e293b;--gc-border:#334155;
     --gc-success:#22c55e;--gc-danger:#ef4444;--gc-warn:#f59e0b;
     --gc-purple:#8b5cf6;--gc-teal:#14b8a6;
@@ -26,7 +27,7 @@
   .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
   .logo-text{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   .nav{flex:1;padding:12px 8px;overflow-y:auto}
-  .nav-label{font-size:10px;font-weight:600;color:var(--gc-text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 8px 4px}
+  .nav-label{font-size:11px;font-weight:600;color:var(--gc-text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 8px 4px}
   .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--gc-text2);transition:all .2s;margin-bottom:1px}
   .nav-item:hover{background:var(--gc-dark3);color:var(--gc-text)}
   .nav-item.active{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(59,130,246,.1));color:var(--gc-green);border:1px solid rgba(34,197,94,.2)}
@@ -45,7 +46,7 @@
   .topbar{background:var(--gc-dark2);border-bottom:1px solid var(--gc-border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
   .topbar-title{font-size:16px;font-weight:600}
   .topbar-right{display:flex;align-items:center;gap:12px}
-  .topbar-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--gc-border);background:transparent;color:var(--gc-text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s}
+  .topbar-btn{width:44px;height:44px;border-radius:8px;border:1px solid var(--gc-border);background:transparent;color:var(--gc-text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s}
   .topbar-btn:hover{background:var(--gc-dark3);color:var(--gc-text)}
   .topbar-date{font-size:13px;color:var(--gc-text3)}
 
@@ -63,9 +64,10 @@
   .login-logo p{font-size:14px;color:var(--gc-text2);margin-top:4px}
   .form-group{margin-bottom:16px}
   .form-label{display:block;font-size:13px;color:var(--gc-text2);margin-bottom:6px;font-weight:500}
-  .form-input{width:100%;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 12px;color:var(--gc-text);font-size:14px;outline:none;transition:border .2s}
+  .form-input{width:100%;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 12px;color:var(--gc-text);font-size:16px;outline:none;transition:border .2s}
   .form-input:focus{border-color:var(--gc-green)}
-  .form-select{width:100%;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 12px;color:var(--gc-text);font-size:14px;outline:none}
+  .form-select{width:100%;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 12px;color:var(--gc-text);font-size:16px;outline:none}
+  .form-select:focus{border-color:var(--gc-green)}
   .btn-primary{width:100%;background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));border:none;border-radius:8px;padding:12px;color:#000;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s}
   .btn-primary:hover{opacity:.9}
   .btn-secondary{background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 16px;color:var(--gc-text);font-size:14px;cursor:pointer;transition:all .2s}
@@ -73,7 +75,7 @@
   .btn-ghost{background:transparent;border:1px solid var(--gc-border);border-radius:8px;padding:8px 14px;color:var(--gc-text2);font-size:13px;cursor:pointer;transition:all .2s}
   .btn-ghost:hover{color:var(--gc-text);border-color:var(--gc-text3)}
   .login-toggle{text-align:center;margin-top:16px;font-size:13px;color:var(--gc-text2)}
-  .login-toggle a{color:var(--gc-green);cursor:pointer}
+  .login-toggle a,.login-link{color:var(--gc-green);cursor:pointer;background:none;border:none;font-size:13px;font-family:inherit;padding:0;text-decoration:underline}
 
   /* CARDS */
   .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
@@ -92,7 +94,7 @@
   .card-icon.teal{background:rgba(20,184,166,.15);color:var(--gc-teal)}
   .card-icon.warn{background:rgba(245,158,11,.15);color:var(--gc-warn)}
   .card-icon.danger{background:rgba(239,68,68,.15);color:var(--gc-danger)}
-  .card-label{font-size:12px;color:var(--gc-text3);margin-bottom:4px;font-weight:500}
+  .card-label{font-size:13px;color:var(--gc-text3);margin-bottom:4px;font-weight:500}
   .card-value{font-size:22px;font-weight:700;color:var(--gc-text)}
   .card-sub{font-size:12px;color:var(--gc-text3);margin-top:4px}
   .card-trend{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:4px}
@@ -159,10 +161,10 @@
   .chat-input-area{padding:16px 20px;border-top:1px solid var(--gc-border);display:flex;gap:10px}
   .chat-input{flex:1;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:10px;padding:10px 14px;color:var(--gc-text);font-size:14px;outline:none;transition:border .2s}
   .chat-input:focus{border-color:var(--gc-green)}
-  .chat-send{background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));border:none;border-radius:10px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;font-size:18px;transition:opacity .2s}
+  .chat-send{background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));border:none;border-radius:10px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;font-size:18px;transition:opacity .2s}
   .chat-send:hover{opacity:.85}
   .quick-questions{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 12px}
-  .quick-q{background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--gc-text2);cursor:pointer;transition:all .2s}
+  .quick-q{background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:20px;padding:6px 12px;font-size:13px;color:var(--gc-text2);cursor:pointer;transition:all .2s;font-family:inherit}
   .quick-q:hover{border-color:var(--gc-green);color:var(--gc-green)}
 
   /* ACHIEVEMENTS */
@@ -173,8 +175,8 @@
   .ach-card.locked{opacity:.5;filter:grayscale(.8)}
   .ach-emoji{font-size:32px;margin-bottom:8px}
   .ach-name{font-size:13px;font-weight:600;margin-bottom:4px}
-  .ach-desc{font-size:11px;color:var(--gc-text3)}
-  .ach-tag{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;border-radius:10px}
+  .ach-desc{font-size:12px;color:var(--gc-text3)}
+  .ach-tag{display:inline-block;margin-top:6px;font-size:11px;padding:2px 8px;border-radius:10px}
   .ach-tag.done{background:rgba(34,197,94,.15);color:var(--gc-success)}
   .ach-tag.locked{background:var(--gc-dark3);color:var(--gc-text3)}
 
@@ -187,7 +189,7 @@
   /* LEVEL */
   .level-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:20px}
   .level-badge{width:64px;height:64px;background:linear-gradient(135deg,var(--gc-purple),var(--gc-blue));border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px}
-  .level-badge span{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:1px}
+  .level-badge span{font-size:11px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:1px}
   .level-info h3{font-size:18px;font-weight:700}
   .level-info p{font-size:13px;color:var(--gc-text2);margin-top:2px}
   .level-xp{margin-top:8px}
@@ -256,6 +258,18 @@
   .profile-name{font-size:20px;font-weight:700}
   .profile-meta{font-size:13px;color:var(--gc-text2);margin-top:4px}
   .profile-plan{display:inline-block;margin-top:6px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:3px 12px;font-size:12px;color:var(--gc-green);font-weight:600}
+
+  /* FOCUS */
+  :focus-visible{outline:2px solid var(--gc-green);outline-offset:2px}
+
+  /* NAV-ITEM AS BUTTON */
+  button.nav-item{width:100%;text-align:left;font-family:inherit}
+  button.user-card{width:100%;text-align:left;font-family:inherit;background:transparent;border:none}
+
+  @media(max-width:768px){
+    .plans-grid{grid-template-columns:1fr!important}
+    .metas-cards{grid-template-columns:1fr!important}
+  }
 </style>
 </head>
 <body>
@@ -272,7 +286,7 @@
       <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="seu@email.com" id="loginEmail"></div>
       <div class="form-group"><label class="form-label">Senha</label><input class="form-input" type="password" placeholder="••••••••" id="loginPass"></div>
       <button class="btn-primary" onclick="doLogin()">Entrar <i class="ti ti-arrow-right"></i></button>
-      <div class="login-toggle" style="margin-top:16px">Não tem conta? <a onclick="showRegister()">Criar conta grátis</a></div>
+      <div class="login-toggle" style="margin-top:16px">Não tem conta? <button type="button" class="login-link" onclick="showRegister()">Criar conta grátis</button></div>
     </div>
     <div id="registerForm" class="hidden">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -287,7 +301,7 @@
       </div>
       <div class="form-group"><label class="form-label">Modelo do carro</label><input class="form-input" placeholder="Ex: Toyota Corolla 2021" id="regCarro"></div>
       <button class="btn-primary" onclick="doRegister()">Criar conta grátis 🚀</button>
-      <div class="login-toggle" style="margin-top:12px">Já tem conta? <a onclick="showLogin()">Fazer login</a></div>
+      <div class="login-toggle" style="margin-top:12px">Já tem conta? <button type="button" class="login-link" onclick="showLogin()">Fazer login</button></div>
     </div>
   </div>
 </div>
@@ -303,27 +317,27 @@
     </div>
     <nav class="nav">
       <div class="nav-label">Principal</div>
-      <div class="nav-item active" onclick="goTo('dashboard',this)"><i class="ti ti-home"></i> Dashboard</div>
-      <div class="nav-item" onclick="goTo('registro',this)"><i class="ti ti-clock-play"></i> Registrar Dia</div>
-      <div class="nav-item" onclick="goTo('combustivel',this)"><i class="ti ti-gas-station"></i> Combustível</div>
-      <div class="nav-item" onclick="goTo('manutencao',this)"><i class="ti ti-tool"></i> Manutenção</div>
+      <button type="button" class="nav-item active" onclick="goTo('dashboard',this)"><i class="ti ti-home"></i> Dashboard</button>
+      <button type="button" class="nav-item" onclick="goTo('registro',this)"><i class="ti ti-clock-play"></i> Registrar Dia</button>
+      <button type="button" class="nav-item" onclick="goTo('combustivel',this)"><i class="ti ti-gas-station"></i> Combustível</button>
+      <button type="button" class="nav-item" onclick="goTo('manutencao',this)"><i class="ti ti-tool"></i> Manutenção</button>
       <div class="nav-label">Financeiro</div>
-      <div class="nav-item" onclick="goTo('financas',this)"><i class="ti ti-chart-line"></i> Finanças</div>
-      <div class="nav-item" onclick="goTo('metas',this)"><i class="ti ti-target"></i> Metas</div>
+      <button type="button" class="nav-item" onclick="goTo('financas',this)"><i class="ti ti-chart-line"></i> Finanças</button>
+      <button type="button" class="nav-item" onclick="goTo('metas',this)"><i class="ti ti-target"></i> Metas</button>
       <div class="nav-label">Extras</div>
-      <div class="nav-item" onclick="goTo('chat',this)"><i class="ti ti-robot"></i> Copiloto <span class="badge">IA</span></div>
-      <div class="nav-item" onclick="goTo('conquistas',this)"><i class="ti ti-trophy"></i> Conquistas</div>
-      <div class="nav-item" onclick="goTo('perfil',this)"><i class="ti ti-user"></i> Perfil</div>
+      <button type="button" class="nav-item" onclick="goTo('chat',this)"><i class="ti ti-robot"></i> Copiloto <span class="badge">IA</span></button>
+      <button type="button" class="nav-item" onclick="goTo('conquistas',this)"><i class="ti ti-trophy"></i> Conquistas</button>
+      <button type="button" class="nav-item" onclick="goTo('perfil',this)"><i class="ti ti-user"></i> Perfil</button>
     </nav>
     <div class="sidebar-bottom">
-      <div class="user-card" onclick="goTo('perfil',null)">
+      <button type="button" class="user-card" onclick="goTo('perfil',null)" aria-label="Ir para perfil">
         <div class="avatar" id="sidebarAvatar">MO</div>
         <div class="user-info">
           <div class="user-name" id="sidebarName">Motorista</div>
           <div class="user-plan">Plano Pro ⚡</div>
         </div>
         <i class="ti ti-chevron-right" style="color:var(--gc-text3);font-size:14px"></i>
-      </div>
+      </button>
     </div>
   </aside>
 
@@ -554,8 +568,8 @@
     <div id="page-financas" class="page">
       <div class="tabs">
         <button class="tab active" onclick="setTab(this,'tab-dia')">Hoje</button>
-        <button class="tab" onclick="setTab(this,'tab-sem')">Semana</button>
-        <button class="tab" onclick="setTab(this,'tab-mes')">Mês</button>
+        <button class="tab" disabled title="Em breve" style="opacity:.4;cursor:not-allowed">Semana</button>
+        <button class="tab" disabled title="Em breve" style="opacity:.4;cursor:not-allowed">Mês</button>
       </div>
       <div id="tab-dia">
         <div class="cards-grid">
@@ -601,7 +615,7 @@
         <div class="meta-row"><span>Início: 01/05</span><span>Média diária: R$ 304</span><span>Fim: 31/05</span></div>
       </div>
 
-      <div class="cards-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="cards-grid metas-cards" style="grid-template-columns:repeat(3,1fr)">
         <div class="stat-card green">
           <div class="card-icon green"><i class="ti ti-sun"></i></div>
           <div class="card-label">Meta Diária</div>
@@ -649,12 +663,12 @@
           <div class="msg msg-bot">📊 Resumo rápido de hoje:<br>• Ganho bruto: <strong>R$ 487</strong><br>• Lucro líquido: <strong>R$ 342</strong><br>• Km rodados: <strong>187 km</strong><br>• Meta do mês: <strong>73% atingida</strong></div>
         </div>
         <div class="quick-questions">
-          <div class="quick-q" onclick="sendQuestion('Valeu a pena rodar hoje?')">Valeu a pena?</div>
-          <div class="quick-q" onclick="sendQuestion('Qual meu custo por km?')">Custo por km?</div>
-          <div class="quick-q" onclick="sendQuestion('Quanto preciso rodar amanhã para bater a meta?')">Quanto falta para a meta?</div>
-          <div class="quick-q" onclick="sendQuestion('Qual foi meu melhor dia da semana?')">Melhor dia?</div>
-          <div class="quick-q" onclick="sendQuestion('Estou gastando muito com gasolina?')">Gastos com gasolina?</div>
-          <div class="quick-q" onclick="sendQuestion('Quando devo fazer manutenção?')">Manutenção?</div>
+          <button type="button" class="quick-q" onclick="sendQuestion('Valeu a pena rodar hoje?')">Valeu a pena?</button>
+          <button type="button" class="quick-q" onclick="sendQuestion('Qual meu custo por km?')">Custo por km?</button>
+          <button type="button" class="quick-q" onclick="sendQuestion('Quanto preciso rodar amanhã para bater a meta?')">Quanto falta para a meta?</button>
+          <button type="button" class="quick-q" onclick="sendQuestion('Qual foi meu melhor dia da semana?')">Melhor dia?</button>
+          <button type="button" class="quick-q" onclick="sendQuestion('Estou gastando muito com gasolina?')">Gastos com gasolina?</button>
+          <button type="button" class="quick-q" onclick="sendQuestion('Quando devo fazer manutenção?')">Manutenção?</button>
         </div>
         <div class="chat-input-area">
           <input class="chat-input" id="chatInput" placeholder="Pergunte qualquer coisa sobre seus ganhos..." onkeydown="if(event.key==='Enter')sendChat()">
@@ -729,7 +743,7 @@
       </div>
       <div style="margin-top:12px">
         <div class="section-title" style="margin-bottom:12px">Planos disponíveis</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex-wrap:wrap">
+        <div class="plans-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex-wrap:wrap">
           <div style="background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:16px;text-align:center">
             <div style="font-size:14px;font-weight:700;margin-bottom:6px">Grátis</div>
             <div style="font-size:24px;font-weight:800;margin-bottom:6px">R$ 0</div>
@@ -758,7 +772,7 @@
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-header">
       <div style="font-size:16px;font-weight:600">Nova Manutenção</div>
-      <button style="background:transparent;border:none;cursor:pointer;font-size:20px;color:var(--gc-text2)" onclick="document.getElementById('modalMaint').classList.add('hidden')"><i class="ti ti-x"></i></button>
+      <button style="background:transparent;border:none;cursor:pointer;font-size:20px;color:var(--gc-text2)" aria-label="Fechar modal" onclick="document.getElementById('modalMaint').classList.add('hidden')"><i class="ti ti-x"></i></button>
     </div>
     <div class="modal-body">
       <div class="form-group"><label class="form-label">Categoria</label>
@@ -889,16 +903,19 @@ function showLogin() {
 }
 
 function doLogin() {
-  const name = document.getElementById('loginEmail').value || 'Motorista';
-  enterApp(name.split('@')[0]||'Motorista');
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  if(!email || !pass) { showToast('⚠️ Preencha email e senha'); return; }
+  enterApp(email.split('@')[0]||'Motorista');
 }
 
 function doRegister() {
-  const name = document.getElementById('regNome').value || 'Motorista';
-  const car = document.getElementById('regCarro').value || 'Toyota Corolla';
+  const name = document.getElementById('regNome').value.trim();
+  const car = document.getElementById('regCarro').value.trim();
+  if(!name) { showToast('⚠️ Informe seu nome'); return; }
   const meta = document.getElementById('regMeta').value || '5000';
-  state.user = {name, car, city:'São Carlos, SP'};
-  enterApp(name, car);
+  state.user = {name, car:car||'Toyota Corolla', city:'São Carlos, SP'};
+  enterApp(name, car||'Toyota Corolla');
 }
 
 function enterApp(name, car) {
@@ -917,6 +934,7 @@ function enterApp(name, car) {
 }
 
 function logout() {
+  if(!confirm('Tem certeza que deseja sair da conta?')) return;
   document.getElementById('appContainer').classList.add('hidden');
   document.getElementById('loginPage').classList.remove('hidden');
   showToast('Até logo! 👋');
