@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --gc-green:#22c55e;--gc-green-dark:#16a34a;--gc-blue:#3b82f6;--gc-blue-dark:#1d4ed8;
+    --gc-dark:#0f172a;--gc-dark2:#1e293b;--gc-dark3:#334155;
+    --gc-text:#f1f5f9;--gc-text2:#94a3b8;--gc-text3:#64748b;
+    --gc-card:#1e293b;--gc-border:#334155;
+    --gc-success:#22c55e;--gc-danger:#ef4444;--gc-warn:#f59e0b;
+    --gc-purple:#8b5cf6;--gc-teal:#14b8a6;
+    font-family:'Segoe UI',system-ui,sans-serif;
+  }
+  body{background:var(--gc-dark);color:var(--gc-text);min-height:100vh;overflow-x:hidden}
+  .app{display:flex;min-height:100vh}
+
+  /* SIDEBAR */
+  .sidebar{width:220px;background:var(--gc-dark2);border-right:1px solid var(--gc-border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
+  .sidebar-logo{padding:20px 16px;border-bottom:1px solid var(--gc-border);display:flex;align-items:center;gap:10px}
+  .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .logo-text{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .nav{flex:1;padding:12px 8px;overflow-y:auto}
+  .nav-label{font-size:10px;font-weight:600;color:var(--gc-text3);text-transform:uppercase;letter-spacing:.8px;padding:8px 8px 4px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;font-size:14px;color:var(--gc-text2);transition:all .2s;margin-bottom:1px}
+  .nav-item:hover{background:var(--gc-dark3);color:var(--gc-text)}
+  .nav-item.active{background:linear-gradient(135deg,rgba(34,197,94,.15),rgba(59,130,246,.1));color:var(--gc-green);border:1px solid rgba(34,197,94,.2)}
+  .nav-item i{font-size:18px;width:20px;text-align:center}
+  .nav-item .badge{margin-left:auto;background:var(--gc-green);color:#000;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px}
+  .sidebar-bottom{padding:12px 8px;border-top:1px solid var(--gc-border)}
+  .user-card{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer}
+  .user-card:hover{background:var(--gc-dark3)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#000}
+  .user-info{flex:1;min-width:0}
+  .user-name{font-size:13px;font-weight:600;color:var(--gc-text)}
+  .user-plan{font-size:11px;color:var(--gc-green)}
+
+  /* MAIN */
+  .main{flex:1;margin-left:220px;min-height:100vh}
+  .topbar{background:var(--gc-dark2);border-bottom:1px solid var(--gc-border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+  .topbar-title{font-size:16px;font-weight:600}
+  .topbar-right{display:flex;align-items:center;gap:12px}
+  .topbar-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--gc-border);background:transparent;color:var(--gc-text2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s}
+  .topbar-btn:hover{background:var(--gc-dark3);color:var(--gc-text)}
+  .topbar-date{font-size:13px;color:var(--gc-text3)}
+
+  /* PAGES */
+  .page{display:none;padding:24px;animation:fadeIn .3s ease}
+  .page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* LOGIN PAGE */
+  .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--gc-dark)}
+  .login-card{background:var(--gc-dark2);border:1px solid var(--gc-border);border-radius:16px;padding:40px;width:100%;max-width:420px}
+  .login-logo{text-align:center;margin-bottom:32px}
+  .login-logo .big-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:12px}
+  .login-logo h1{font-size:28px;font-weight:700;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .login-logo p{font-size:14px;color:var(--gc-text2);margin-top:4px}
+  .form-group{margin-bottom:16px}
+  .form-label{display:block;font-size:13px;color:var(--gc-text2);margin-bottom:6px;font-weight:500}
+  .form-input{width:100%;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 12px;color:var(--gc-text);font-size:14px;outline:none;transition:border .2s}
+  .form-input:focus{border-color:var(--gc-green)}
+  .form-select{width:100%;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 12px;color:var(--gc-text);font-size:14px;outline:none}
+  .btn-primary{width:100%;background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));border:none;border-radius:8px;padding:12px;color:#000;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s}
+  .btn-primary:hover{opacity:.9}
+  .btn-secondary{background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:8px;padding:10px 16px;color:var(--gc-text);font-size:14px;cursor:pointer;transition:all .2s}
+  .btn-secondary:hover{background:var(--gc-border)}
+  .btn-ghost{background:transparent;border:1px solid var(--gc-border);border-radius:8px;padding:8px 14px;color:var(--gc-text2);font-size:13px;cursor:pointer;transition:all .2s}
+  .btn-ghost:hover{color:var(--gc-text);border-color:var(--gc-text3)}
+  .login-toggle{text-align:center;margin-top:16px;font-size:13px;color:var(--gc-text2)}
+  .login-toggle a{color:var(--gc-green);cursor:pointer}
+
+  /* CARDS */
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+  .stat-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden;transition:transform .2s}
+  .stat-card:hover{transform:translateY(-2px)}
+  .stat-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:50%;opacity:.06}
+  .stat-card.green::before{background:var(--gc-green)}
+  .stat-card.blue::before{background:var(--gc-blue)}
+  .stat-card.purple::before{background:var(--gc-purple)}
+  .stat-card.teal::before{background:var(--gc-teal)}
+  .stat-card.warn::before{background:var(--gc-warn)}
+  .card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
+  .card-icon.green{background:rgba(34,197,94,.15);color:var(--gc-green)}
+  .card-icon.blue{background:rgba(59,130,246,.15);color:var(--gc-blue)}
+  .card-icon.purple{background:rgba(139,92,246,.15);color:var(--gc-purple)}
+  .card-icon.teal{background:rgba(20,184,166,.15);color:var(--gc-teal)}
+  .card-icon.warn{background:rgba(245,158,11,.15);color:var(--gc-warn)}
+  .card-icon.danger{background:rgba(239,68,68,.15);color:var(--gc-danger)}
+  .card-label{font-size:12px;color:var(--gc-text3);margin-bottom:4px;font-weight:500}
+  .card-value{font-size:22px;font-weight:700;color:var(--gc-text)}
+  .card-sub{font-size:12px;color:var(--gc-text3);margin-top:4px}
+  .card-trend{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:4px}
+  .card-trend.up{color:var(--gc-success)}
+  .card-trend.down{color:var(--gc-danger)}
+
+  /* TODAY CARD */
+  .today-card{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(59,130,246,.08));border:1px solid rgba(34,197,94,.2);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  .today-emoji{font-size:40px}
+  .today-text h2{font-size:18px;font-weight:700;margin-bottom:4px}
+  .today-text p{font-size:14px;color:var(--gc-text2)}
+  .today-badge{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:6px 14px;font-size:13px;color:var(--gc-green);font-weight:600}
+
+  /* SECTION */
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .section-title{font-size:16px;font-weight:600;color:var(--gc-text)}
+  .section-sub{font-size:13px;color:var(--gc-text3);margin-top:2px}
+
+  /* CHART CONTAINER */
+  .chart-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:20px}
+  .chart-wrap{position:relative;width:100%;height:220px;margin-top:16px}
+  .chart-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:24px}
+
+  /* FUEL FORM */
+  .form-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:20px;margin-bottom:24px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .fuel-types{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .fuel-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--gc-border);background:transparent;color:var(--gc-text2);font-size:13px;cursor:pointer;transition:all .2s}
+  .fuel-btn.active{background:rgba(34,197,94,.15);border-color:var(--gc-green);color:var(--gc-green)}
+
+  /* TABLE */
+  .table-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;overflow:hidden;margin-bottom:24px}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse}
+  th{background:var(--gc-dark3);padding:10px 14px;text-align:left;font-size:12px;color:var(--gc-text3);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+  td{padding:12px 14px;font-size:14px;border-top:1px solid var(--gc-border);color:var(--gc-text)}
+  tr:hover td{background:rgba(255,255,255,.02)}
+  .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+  .badge-green{background:rgba(34,197,94,.15);color:var(--gc-success)}
+  .badge-warn{background:rgba(245,158,11,.15);color:var(--gc-warn)}
+  .badge-danger{background:rgba(239,68,68,.15);color:var(--gc-danger)}
+  .badge-blue{background:rgba(59,130,246,.15);color:var(--gc-blue)}
+
+  /* PROGRESS */
+  .progress-bar{background:var(--gc-dark3);border-radius:10px;height:10px;overflow:hidden;margin:8px 0}
+  .progress-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--gc-green),var(--gc-blue));transition:width .5s}
+
+  /* META CARD */
+  .meta-big{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(59,130,246,.06));border:1px solid rgba(34,197,94,.15);border-radius:16px;padding:24px;margin-bottom:24px}
+  .meta-percent{font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .meta-label{font-size:14px;color:var(--gc-text2);margin-bottom:8px}
+  .meta-row{display:flex;justify-content:space-between;font-size:13px;color:var(--gc-text2);margin-top:12px}
+
+  /* CHAT */
+  .chat-wrap{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;height:calc(100vh - 160px);min-height:400px}
+  .chat-header{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(59,130,246,.08));padding:16px 20px;border-bottom:1px solid var(--gc-border);display:flex;align-items:center;gap:12px}
+  .chat-avatar{width:40px;height:40px;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+  .chat-header-info h3{font-size:15px;font-weight:600}
+  .chat-header-info p{font-size:12px;color:var(--gc-success)}
+  .chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:75%;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.5}
+  .msg-bot{background:var(--gc-dark3);border-radius:4px 12px 12px 12px;align-self:flex-start}
+  .msg-user{background:linear-gradient(135deg,var(--gc-green-dark),var(--gc-blue-dark));color:#fff;border-radius:12px 4px 12px 12px;align-self:flex-end}
+  .chat-input-area{padding:16px 20px;border-top:1px solid var(--gc-border);display:flex;gap:10px}
+  .chat-input{flex:1;background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:10px;padding:10px 14px;color:var(--gc-text);font-size:14px;outline:none;transition:border .2s}
+  .chat-input:focus{border-color:var(--gc-green)}
+  .chat-send{background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));border:none;border-radius:10px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#000;font-size:18px;transition:opacity .2s}
+  .chat-send:hover{opacity:.85}
+  .quick-questions{display:flex;gap:8px;flex-wrap:wrap;padding:0 20px 12px}
+  .quick-q{background:var(--gc-dark3);border:1px solid var(--gc-border);border-radius:20px;padding:6px 12px;font-size:12px;color:var(--gc-text2);cursor:pointer;transition:all .2s}
+  .quick-q:hover{border-color:var(--gc-green);color:var(--gc-green)}
+
+  /* ACHIEVEMENTS */
+  .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+  .ach-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:16px;text-align:center;transition:transform .2s}
+  .ach-card:hover{transform:translateY(-2px)}
+  .ach-card.unlocked{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05)}
+  .ach-card.locked{opacity:.5;filter:grayscale(.8)}
+  .ach-emoji{font-size:32px;margin-bottom:8px}
+  .ach-name{font-size:13px;font-weight:600;margin-bottom:4px}
+  .ach-desc{font-size:11px;color:var(--gc-text3)}
+  .ach-tag{display:inline-block;margin-top:6px;font-size:10px;padding:2px 8px;border-radius:10px}
+  .ach-tag.done{background:rgba(34,197,94,.15);color:var(--gc-success)}
+  .ach-tag.locked{background:var(--gc-dark3);color:var(--gc-text3)}
+
+  /* STREAK */
+  .streak-card{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(239,68,68,.06));border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:16px;margin-bottom:24px}
+  .streak-num{font-size:48px;font-weight:800;color:var(--gc-warn)}
+  .streak-info h3{font-size:16px;font-weight:600}
+  .streak-info p{font-size:13px;color:var(--gc-text2)}
+
+  /* LEVEL */
+  .level-card{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:20px}
+  .level-badge{width:64px;height:64px;background:linear-gradient(135deg,var(--gc-purple),var(--gc-blue));border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:22px}
+  .level-badge span{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:1px}
+  .level-info h3{font-size:18px;font-weight:700}
+  .level-info p{font-size:13px;color:var(--gc-text2);margin-top:2px}
+  .level-xp{margin-top:8px}
+
+  /* MAINTENANCE */
+  .maint-item{background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:16px}
+  .maint-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .maint-info{flex:1;min-width:0}
+  .maint-name{font-size:14px;font-weight:600;margin-bottom:2px}
+  .maint-date{font-size:12px;color:var(--gc-text3)}
+  .maint-status{text-align:right}
+  .maint-cost{font-size:15px;font-weight:700;color:var(--gc-text);margin-bottom:4px}
+
+  /* TABS */
+  .tabs{display:flex;gap:4px;background:var(--gc-dark3);padding:4px;border-radius:10px;margin-bottom:20px}
+  .tab{flex:1;padding:8px;border-radius:7px;border:none;background:transparent;color:var(--gc-text2);font-size:13px;cursor:pointer;transition:all .2s;text-align:center}
+  .tab.active{background:var(--gc-card);color:var(--gc-text);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+  /* ALERTS */
+  .alert{border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:14px}
+  .alert-info{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:var(--gc-blue)}
+  .alert-warn{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--gc-warn)}
+  .alert-success{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--gc-success)}
+  .alert-danger{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:var(--gc-danger)}
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    .sidebar{transform:translateX(-100%)}
+    .sidebar.open{transform:translateX(0)}
+    .main{margin-left:0}
+    .chart-row{grid-template-columns:1fr}
+    .form-grid{grid-template-columns:1fr}
+    .cards-grid{grid-template-columns:repeat(2,1fr)}
+    .chat-wrap{height:calc(100vh - 120px)}
+  }
+
+  /* REGISTER FORM */
+  .register-day-form{display:flex;flex-direction:column;gap:12px}
+  .input-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  /* SCROLL */
+  ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:var(--gc-border);border-radius:3px}
+
+  /* TYPING */
+  .typing{display:flex;align-items:center;gap:4px;padding:8px 12px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--gc-text3);animation:bounce .9s infinite}
+  .dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,80%,100%{transform:scale(1)}40%{transform:scale(1.4)}}
+
+  /* FLOAT BTN */
+  .fab{position:fixed;bottom:24px;right:24px;width:52px;height:52px;background:linear-gradient(135deg,var(--gc-green),var(--gc-green-dark));border-radius:16px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;color:#000;box-shadow:0 4px 20px rgba(34,197,94,.4);transition:all .2s;z-index:200}
+  .fab:hover{transform:scale(1.08)}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
+  .modal{background:var(--gc-dark2);border:1px solid var(--gc-border);border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+  .modal-header{padding:20px 24px;border-bottom:1px solid var(--gc-border);display:flex;align-items:center;justify-content:space-between}
+  .modal-body{padding:24px}
+  .modal-footer{padding:16px 24px;border-top:1px solid var(--gc-border);display:flex;justify-content:flex-end;gap:10px}
+  .hidden{display:none!important}
+
+  /* PROFILE */
+  .profile-header{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(59,130,246,.08));border:1px solid rgba(34,197,94,.15);border-radius:16px;padding:24px;margin-bottom:24px;display:flex;align-items:center;gap:20px}
+  .profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#000;flex-shrink:0}
+  .profile-name{font-size:20px;font-weight:700}
+  .profile-meta{font-size:13px;color:var(--gc-text2);margin-top:4px}
+  .profile-plan{display:inline-block;margin-top:6px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:3px 12px;font-size:12px;color:var(--gc-green);font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--gc-dark);padding:20px">
+  <div style="background:var(--gc-dark2);border:1px solid var(--gc-border);border-radius:16px;padding:40px;width:100%;max-width:440px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:64px;height:64px;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:30px;margin-bottom:12px">🚗</div>
+      <div style="font-size:26px;font-weight:800;background:linear-gradient(135deg,var(--gc-green),var(--gc-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent">GiroCash</div>
+      <div style="font-size:14px;color:var(--gc-text2);margin-top:4px">Seu copiloto financeiro</div>
+    </div>
+    <div id="loginForm">
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="seu@email.com" id="loginEmail"></div>
+      <div class="form-group"><label class="form-label">Senha</label><input class="form-input" type="password" placeholder="••••••••" id="loginPass"></div>
+      <button class="btn-primary" onclick="doLogin()">Entrar <i class="ti ti-arrow-right"></i></button>
+      <div class="login-toggle" style="margin-top:16px">Não tem conta? <a onclick="showRegister()">Criar conta grátis</a></div>
+    </div>
+    <div id="registerForm" class="hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="form-group"><label class="form-label">Nome</label><input class="form-input" placeholder="Seu nome" id="regNome"></div>
+        <div class="form-group"><label class="form-label">Email</label><input class="form-input" placeholder="email@.com" type="email"></div>
+        <div class="form-group"><label class="form-label">Senha</label><input class="form-input" type="password" placeholder="••••••••"></div>
+        <div class="form-group"><label class="form-label">Cidade</label><input class="form-input" placeholder="São Paulo"></div>
+        <div class="form-group"><label class="form-label">Veículo</label>
+          <select class="form-select"><option>Sedan</option><option>SUV</option><option>Hatch</option><option>Moto</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Meta Mensal</label><input class="form-input" placeholder="R$ 5.000" id="regMeta"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Modelo do carro</label><input class="form-input" placeholder="Ex: Toyota Corolla 2021" id="regCarro"></div>
+      <button class="btn-primary" onclick="doRegister()">Criar conta grátis 🚀</button>
+      <div class="login-toggle" style="margin-top:12px">Já tem conta? <a onclick="showLogin()">Fazer login</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="appContainer" class="app hidden">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🚗</div>
+      <div class="logo-text">GiroCash</div>
+    </div>
+    <nav class="nav">
+      <div class="nav-label">Principal</div>
+      <div class="nav-item active" onclick="goTo('dashboard',this)"><i class="ti ti-home"></i> Dashboard</div>
+      <div class="nav-item" onclick="goTo('registro',this)"><i class="ti ti-clock-play"></i> Registrar Dia</div>
+      <div class="nav-item" onclick="goTo('combustivel',this)"><i class="ti ti-gas-station"></i> Combustível</div>
+      <div class="nav-item" onclick="goTo('manutencao',this)"><i class="ti ti-tool"></i> Manutenção</div>
+      <div class="nav-label">Financeiro</div>
+      <div class="nav-item" onclick="goTo('financas',this)"><i class="ti ti-chart-line"></i> Finanças</div>
+      <div class="nav-item" onclick="goTo('metas',this)"><i class="ti ti-target"></i> Metas</div>
+      <div class="nav-label">Extras</div>
+      <div class="nav-item" onclick="goTo('chat',this)"><i class="ti ti-robot"></i> Copiloto <span class="badge">IA</span></div>
+      <div class="nav-item" onclick="goTo('conquistas',this)"><i class="ti ti-trophy"></i> Conquistas</div>
+      <div class="nav-item" onclick="goTo('perfil',this)"><i class="ti ti-user"></i> Perfil</div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="user-card" onclick="goTo('perfil',null)">
+        <div class="avatar" id="sidebarAvatar">MO</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarName">Motorista</div>
+          <div class="user-plan">Plano Pro ⚡</div>
+        </div>
+        <i class="ti ti-chevron-right" style="color:var(--gc-text3);font-size:14px"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="topbar-btn" onclick="toggleSidebar()" id="menuBtn"><i class="ti ti-menu-2"></i></button>
+        <div>
+          <div class="topbar-title" id="pageTitle">Dashboard</div>
+          <div class="topbar-date" id="pageDate"></div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn" onclick="goTo('registro',null)"><i class="ti ti-plus"></i></button>
+        <button class="topbar-btn"><i class="ti ti-bell"></i></button>
+        <div class="avatar" style="width:32px;height:32px;font-size:12px;cursor:pointer" onclick="goTo('perfil',null)" id="topAvatar">MO</div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="today-card">
+        <div style="display:flex;align-items:center;gap:14px;flex:1">
+          <div class="today-emoji">🎯</div>
+          <div class="today-text">
+            <h2>Hoje valeu a pena rodar!</h2>
+            <p>Seu lucro por km está acima da média. Continue assim! 💪</p>
+          </div>
+        </div>
+        <div class="today-badge">R$ 342,80 líquido</div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="stat-card green">
+          <div class="card-icon green"><i class="ti ti-currency-dollar"></i></div>
+          <div class="card-label">Ganho do Dia</div>
+          <div class="card-value">R$ 487</div>
+          <div class="card-trend up"><i class="ti ti-trending-up"></i> +12% vs ontem</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="card-icon blue"><i class="ti ti-wallet"></i></div>
+          <div class="card-label">Lucro Líquido</div>
+          <div class="card-value">R$ 342</div>
+          <div class="card-trend up"><i class="ti ti-trending-up"></i> Bom resultado</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="card-icon purple"><i class="ti ti-road"></i></div>
+          <div class="card-label">Km Rodados</div>
+          <div class="card-value">187 km</div>
+          <div class="card-sub">R$ 1,83/km</div>
+        </div>
+        <div class="stat-card teal">
+          <div class="card-icon teal"><i class="ti ti-clock"></i></div>
+          <div class="card-label">Horas Trabalhadas</div>
+          <div class="card-value">8h 20m</div>
+          <div class="card-sub">R$ 41,09/hora</div>
+        </div>
+        <div class="stat-card warn">
+          <div class="card-icon warn"><i class="ti ti-gas-station"></i></div>
+          <div class="card-label">Combustível Hoje</div>
+          <div class="card-value">R$ 85</div>
+          <div class="card-sub">17,4% do ganho</div>
+        </div>
+        <div class="stat-card green">
+          <div class="card-icon green"><i class="ti ti-car"></i></div>
+          <div class="card-label">Corridas Hoje</div>
+          <div class="card-value">23</div>
+          <div class="card-sub">R$ 21,17/corrida</div>
+        </div>
+      </div>
+
+      <div class="chart-row">
+        <div class="chart-card">
+          <div class="section-header">
+            <div><div class="section-title">Ganhos x Lucro (7 dias)</div><div class="section-sub">Receita bruta vs lucro líquido</div></div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--gc-text2);margin-top:8px">
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#22c55e;display:inline-block"></span>Lucro</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;border-top:2px dashed #3b82f6;display:inline-block"></span>Ganho Bruto</span>
+          </div>
+          <div class="chart-wrap"><canvas id="chartWeek" role="img" aria-label="Gráfico de ganhos e lucro nos últimos 7 dias">Ganhos e lucro dos últimos 7 dias.</canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="section-title" style="margin-bottom:8px">Divisão de Gastos</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--gc-text2);margin-bottom:8px">
+            <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Combustível 44%</span>
+            <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:#8b5cf6;display:inline-block"></span>Manutenção 28%</span>
+            <span style="display:flex;align-items:center;gap:3px"><span style="width:8px;height:8px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Outros 28%</span>
+          </div>
+          <div class="chart-wrap" style="height:180px"><canvas id="chartPie" role="img" aria-label="Gráfico de pizza com divisão de gastos">Combustível 44%, Manutenção 28%, Outros 28%.</canvas></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-header"><div class="section-title">Histórico Recente</div><button class="btn-ghost" onclick="goTo('financas',null)">Ver tudo</button></div>
+        <div class="table-card"><div class="table-scroll"><table>
+          <thead><tr><th>Data</th><th>Corridas</th><th>Km</th><th>Ganho</th><th>Combustível</th><th>Lucro</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Hoje, 06/05</td><td>23</td><td>187 km</td><td>R$ 487</td><td>R$ 85</td><td style="color:var(--gc-success);font-weight:700">R$ 342</td><td><span class="badge badge-green">Ótimo</span></td></tr>
+            <tr><td>05/05</td><td>18</td><td>154 km</td><td>R$ 398</td><td>R$ 72</td><td style="color:var(--gc-success);font-weight:700">R$ 271</td><td><span class="badge badge-green">Bom</span></td></tr>
+            <tr><td>04/05</td><td>21</td><td>201 km</td><td>R$ 452</td><td>R$ 110</td><td style="color:var(--gc-warn);font-weight:700">R$ 229</td><td><span class="badge badge-warn">Regular</span></td></tr>
+            <tr><td>03/05</td><td>15</td><td>128 km</td><td>R$ 312</td><td>R$ 58</td><td style="color:var(--gc-success);font-weight:700">R$ 201</td><td><span class="badge badge-blue">Normal</span></td></tr>
+          </tbody>
+        </table></div></div>
+      </div>
+    </div>
+
+    <!-- REGISTRO DO DIA -->
+    <div id="page-registro" class="page">
+      <div class="alert alert-info"><i class="ti ti-info-circle"></i> Registre seu dia em menos de 1 minuto. Todos os cálculos são automáticos!</div>
+      <div class="form-card">
+        <div class="section-header"><div class="section-title">Novo Registro</div></div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Data</label><input class="form-input" type="date" id="regData"></div>
+          <div class="form-group"><label class="form-label">Qtd. Corridas</label><input class="form-input" type="number" placeholder="ex: 22" id="regCorridas"></div>
+          <div class="form-group"><label class="form-label">Hora de Início</label><input class="form-input" type="time" id="regHoraIni" oninput="calcHoras()"></div>
+          <div class="form-group"><label class="form-label">Hora de Fim</label><input class="form-input" type="time" id="regHoraFim" oninput="calcHoras()"></div>
+          <div class="form-group"><label class="form-label">Ganho Bruto</label><input class="form-input" type="number" placeholder="R$ 0,00" id="regGanho" oninput="calcLucro()"></div>
+          <div class="form-group"><label class="form-label">Horas Trabalhadas</label><input class="form-input" id="regHoras" placeholder="Auto" readonly></div>
+          <div class="form-group"><label class="form-label">Km Inicial</label><input class="form-input" type="number" placeholder="ex: 45230" id="regKmIni" oninput="calcKm()"></div>
+          <div class="form-group"><label class="form-label">Km Final</label><input class="form-input" type="number" placeholder="ex: 45417" id="regKmFim" oninput="calcKm()"></div>
+        </div>
+        <div style="background:var(--gc-dark3);border-radius:10px;padding:14px;margin:12px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px" id="calcResults">
+          <div><div style="font-size:11px;color:var(--gc-text3)">Km Rodados</div><div style="font-size:18px;font-weight:700" id="calcKm">0 km</div></div>
+          <div><div style="font-size:11px;color:var(--gc-text3)">Lucro Estimado</div><div style="font-size:18px;font-weight:700;color:var(--gc-success)" id="calcLucro">R$ 0</div></div>
+          <div><div style="font-size:11px;color:var(--gc-text3)">R$/km</div><div style="font-size:18px;font-weight:700" id="calcKmLucro">—</div></div>
+        </div>
+        <div class="form-group"><label class="form-label">Observações</label><textarea class="form-input" rows="2" placeholder="Notas do dia..."></textarea></div>
+        <button class="btn-primary" onclick="salvarDia()" style="max-width:200px">Salvar dia ✅</button>
+      </div>
+      <div>
+        <div class="section-title" style="margin-bottom:16px">Dias registrados esta semana</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <div style="text-align:center" id="weekDays"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMBUSTÍVEL -->
+    <div id="page-combustivel" class="page">
+      <div class="form-card">
+        <div class="section-title" style="margin-bottom:12px">Novo Abastecimento</div>
+        <div style="margin-bottom:12px">
+          <div style="font-size:12px;color:var(--gc-text3);margin-bottom:6px">Tipo de combustível</div>
+          <div class="fuel-types">
+            <button class="fuel-btn active" onclick="setFuel(this)">⛽ Gasolina</button>
+            <button class="fuel-btn" onclick="setFuel(this)">🌿 Etanol</button>
+            <button class="fuel-btn" onclick="setFuel(this)">💨 GNV</button>
+            <button class="fuel-btn" onclick="setFuel(this)">🔵 Diesel</button>
+            <button class="fuel-btn" onclick="setFuel(this)">⚡ Elétrico</button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Litros abastecidos</label><input class="form-input" type="number" placeholder="ex: 40" id="fuelLitros" oninput="calcFuel()"></div>
+          <div class="form-group"><label class="form-label">Preço por litro</label><input class="form-input" type="number" placeholder="ex: 5,89" id="fuelPreco" oninput="calcFuel()"></div>
+          <div class="form-group"><label class="form-label">Km atual</label><input class="form-input" type="number" placeholder="ex: 45417" id="fuelKm"></div>
+          <div class="form-group"><label class="form-label">Posto</label><input class="form-input" placeholder="Nome do posto"></div>
+        </div>
+        <div style="background:var(--gc-dark3);border-radius:10px;padding:14px;margin:8px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+          <div><div style="font-size:11px;color:var(--gc-text3)">Total</div><div style="font-size:18px;font-weight:700;color:var(--gc-warn)" id="fuelTotal">R$ 0</div></div>
+          <div><div style="font-size:11px;color:var(--gc-text3)">Média km/l</div><div style="font-size:18px;font-weight:700" id="fuelMedia">—</div></div>
+          <div><div style="font-size:11px;color:var(--gc-text3)">Custo/km</div><div style="font-size:18px;font-weight:700" id="fuelCustoKm">—</div></div>
+        </div>
+        <button class="btn-primary" style="max-width:220px" onclick="salvarAbastecimento()">Registrar abastecimento</button>
+      </div>
+
+      <div class="chart-card" style="margin-bottom:24px">
+        <div class="section-title" style="margin-bottom:4px">Variação do preço da Gasolina</div>
+        <div style="font-size:12px;color:var(--gc-text3);margin-bottom:8px">Últimos 30 abastecimentos</div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--gc-text2);margin-bottom:8px">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#f59e0b;display:inline-block"></span>Gasolina R$/L</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;border-top:2px dashed #22c55e;display:inline-block"></span>Etanol R$/L</span>
+        </div>
+        <div class="chart-wrap"><canvas id="chartFuel" role="img" aria-label="Gráfico de variação do preço do combustível">Variação do preço da gasolina e etanol ao longo do tempo.</canvas></div>
+      </div>
+
+      <div class="section-title" style="margin-bottom:12px">Histórico de Abastecimentos</div>
+      <div class="table-card"><div class="table-scroll"><table>
+        <thead><tr><th>Data</th><th>Tipo</th><th>Litros</th><th>Preço/L</th><th>Total</th><th>Km</th><th>Posto</th></tr></thead>
+        <tbody>
+          <tr><td>06/05</td><td>⛽ Gasolina</td><td>40L</td><td>R$ 5,89</td><td style="color:var(--gc-warn);font-weight:700">R$ 235,60</td><td>45.417</td><td>Ipiranga</td></tr>
+          <tr><td>03/05</td><td>⛽ Gasolina</td><td>35L</td><td>R$ 5,85</td><td style="color:var(--gc-warn);font-weight:700">R$ 204,75</td><td>45.230</td><td>BR</td></tr>
+          <tr><td>28/04</td><td>🌿 Etanol</td><td>50L</td><td>R$ 3,99</td><td style="color:var(--gc-warn);font-weight:700">R$ 199,50</td><td>45.076</td><td>Posto City</td></tr>
+        </tbody>
+      </table></div></div>
+    </div>
+
+    <!-- MANUTENÇÃO -->
+    <div id="page-manutencao" class="page">
+      <div class="alert alert-warn"><i class="ti ti-alert-triangle"></i> 2 manutenções próximas do prazo. Confira abaixo!</div>
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="btn-secondary" onclick="showModal('modalMaint')"><i class="ti ti-plus"></i> Nova manutenção</button>
+      </div>
+      <div class="maint-item">
+        <div class="maint-icon" style="background:rgba(34,197,94,.15)">🛢️</div>
+        <div class="maint-info"><div class="maint-name">Troca de Óleo</div><div class="maint-date">Realizada: 15/03/2025 — Próxima: 15/06/2025 ou 50.000 km</div></div>
+        <div class="maint-status"><div class="maint-cost">R$ 180</div><span class="badge badge-green">Em dia</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="maint-icon" style="background:rgba(245,158,11,.15)">🔧</div>
+        <div class="maint-info"><div class="maint-name">Revisão Freios</div><div class="maint-date">Realizada: 10/01/2025 — Próxima: 10/07/2025</div></div>
+        <div class="maint-status"><div class="maint-cost">R$ 320</div><span class="badge badge-warn">Próxima</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="maint-icon" style="background:rgba(239,68,68,.15)">🛞</div>
+        <div class="maint-info"><div class="maint-name">Pneus</div><div class="maint-date">Último: 02/11/2024 — Vencido há 2 meses</div></div>
+        <div class="maint-status"><div class="maint-cost">R$ 1.200</div><span class="badge badge-danger">Atrasado</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="maint-icon" style="background:rgba(59,130,246,.15)">⚖️</div>
+        <div class="maint-info"><div class="maint-name">Alinhamento e Balanceamento</div><div class="maint-date">Realizado: 20/04/2025</div></div>
+        <div class="maint-status"><div class="maint-cost">R$ 90</div><span class="badge badge-green">Em dia</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="maint-icon" style="background:rgba(139,92,246,.15)">🚿</div>
+        <div class="maint-info"><div class="maint-name">Lavagem Completa</div><div class="maint-date">Última: 01/05/2025</div></div>
+        <div class="maint-status"><div class="maint-cost">R$ 60</div><span class="badge badge-green">Em dia</span></div>
+      </div>
+      <div class="maint-item">
+        <div class="maint-icon" style="background:rgba(245,158,11,.15)">🛡️</div>
+        <div class="maint-info"><div class="maint-name">Seguro do Veículo</div><div class="maint-date">Vence: 30/12/2025</div></div>
+        <div class="maint-status"><div class="maint-cost">R$ 2.400/ano</div><span class="badge badge-green">Em dia</span></div>
+      </div>
+    </div>
+
+    <!-- FINANÇAS -->
+    <div id="page-financas" class="page">
+      <div class="tabs">
+        <button class="tab active" onclick="setTab(this,'tab-dia')">Hoje</button>
+        <button class="tab" onclick="setTab(this,'tab-sem')">Semana</button>
+        <button class="tab" onclick="setTab(this,'tab-mes')">Mês</button>
+      </div>
+      <div id="tab-dia">
+        <div class="cards-grid">
+          <div class="stat-card green"><div class="card-icon green"><i class="ti ti-arrow-up-circle"></i></div><div class="card-label">Receita Bruta</div><div class="card-value">R$ 487</div></div>
+          <div class="stat-card warn"><div class="card-icon warn"><i class="ti ti-arrow-down-circle"></i></div><div class="card-label">Gastos Fixos</div><div class="card-value">R$ 48</div></div>
+          <div class="stat-card blue"><div class="card-icon danger"><i class="ti ti-alert-circle"></i></div><div class="card-label">Gastos Variáveis</div><div class="card-value">R$ 96</div></div>
+          <div class="stat-card green"><div class="card-icon green"><i class="ti ti-wallet"></i></div><div class="card-label">Lucro Líquido</div><div class="card-value" style="color:var(--gc-success)">R$ 343</div></div>
+        </div>
+        <div class="chart-card">
+          <div class="section-title" style="margin-bottom:8px">Receita x Gastos x Lucro — Maio 2025</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--gc-text2);margin-bottom:8px">
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#22c55e;display:inline-block"></span>Receita</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#ef4444;display:inline-block"></span>Gastos</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;border-top:2px dashed #3b82f6;display:inline-block"></span>Lucro</span>
+          </div>
+          <div class="chart-wrap" style="height:260px"><canvas id="chartFinancas" role="img" aria-label="Gráfico de receita, gastos e lucro mensal">Receita, gastos e lucro ao longo de maio.</canvas></div>
+        </div>
+      </div>
+      <div id="tab-sem" class="hidden"></div>
+      <div id="tab-mes" class="hidden"></div>
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+        <button class="btn-secondary"><i class="ti ti-download"></i> Exportar CSV</button>
+        <button class="btn-secondary"><i class="ti ti-file-type-pdf"></i> Exportar PDF</button>
+      </div>
+    </div>
+
+    <!-- METAS -->
+    <div id="page-metas" class="page">
+      <div class="meta-big">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="meta-label">Meta mensal de maio</div>
+            <div class="meta-percent">73%</div>
+            <div style="font-size:14px;color:var(--gc-text2)">R$ 3.650 de R$ 5.000 conquistados</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;color:var(--gc-text3)">Faltam</div>
+            <div style="font-size:28px;font-weight:700;color:var(--gc-warn)">R$ 1.350</div>
+            <div style="font-size:12px;color:var(--gc-text3)">25 dias restantes</div>
+          </div>
+        </div>
+        <div class="progress-bar" style="margin-top:16px"><div class="progress-fill" style="width:73%"></div></div>
+        <div class="meta-row"><span>Início: 01/05</span><span>Média diária: R$ 304</span><span>Fim: 31/05</span></div>
+      </div>
+
+      <div class="cards-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card green">
+          <div class="card-icon green"><i class="ti ti-sun"></i></div>
+          <div class="card-label">Meta Diária</div>
+          <div class="card-value">R$ 342</div>
+          <div class="card-trend up"><i class="ti ti-check"></i> Batida hoje!</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="card-icon blue"><i class="ti ti-calendar-week"></i></div>
+          <div class="card-label">Meta Semanal</div>
+          <div class="card-value">R$ 1.890</div>
+          <div class="card-trend up"><i class="ti ti-trending-up"></i> 84% atingido</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="card-icon purple"><i class="ti ti-calendar-month"></i></div>
+          <div class="card-label">Meta Mensal</div>
+          <div class="card-value">R$ 5.000</div>
+          <div class="card-trend up"><i class="ti ti-trending-up"></i> 73% atingido</div>
+        </div>
+      </div>
+
+      <div class="alert alert-success"><i class="ti ti-star"></i> Você vai bater sua meta mensal se continuar com a média atual de R$ 304/dia!</div>
+
+      <div class="chart-card">
+        <div class="section-title" style="margin-bottom:8px">Projeção vs Meta — Maio</div>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--gc-text2);margin-bottom:8px">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#22c55e;display:inline-block"></span>Lucro acumulado</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;border-top:2px dashed #f59e0b;display:inline-block"></span>Meta R$ 5.000</span>
+        </div>
+        <div class="chart-wrap" style="height:220px"><canvas id="chartMeta" role="img" aria-label="Gráfico de progresso da meta mensal">Progresso do lucro acumulado em relação à meta de R$ 5000.</canvas></div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div id="page-chat" class="page">
+      <div class="chat-wrap">
+        <div class="chat-header">
+          <div class="chat-avatar">🤖</div>
+          <div class="chat-header-info">
+            <h3>Copiloto do Motorista</h3>
+            <p>● Online — IA financeira especializada</p>
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="msg msg-bot">Olá! Sou o <strong>Copiloto do Motorista</strong> 🚗💨<br><br>Posso analisar seus dados e responder qualquer dúvida financeira. Como posso ajudar você hoje?</div>
+          <div class="msg msg-bot">📊 Resumo rápido de hoje:<br>• Ganho bruto: <strong>R$ 487</strong><br>• Lucro líquido: <strong>R$ 342</strong><br>• Km rodados: <strong>187 km</strong><br>• Meta do mês: <strong>73% atingida</strong></div>
+        </div>
+        <div class="quick-questions">
+          <div class="quick-q" onclick="sendQuestion('Valeu a pena rodar hoje?')">Valeu a pena?</div>
+          <div class="quick-q" onclick="sendQuestion('Qual meu custo por km?')">Custo por km?</div>
+          <div class="quick-q" onclick="sendQuestion('Quanto preciso rodar amanhã para bater a meta?')">Quanto falta para a meta?</div>
+          <div class="quick-q" onclick="sendQuestion('Qual foi meu melhor dia da semana?')">Melhor dia?</div>
+          <div class="quick-q" onclick="sendQuestion('Estou gastando muito com gasolina?')">Gastos com gasolina?</div>
+          <div class="quick-q" onclick="sendQuestion('Quando devo fazer manutenção?')">Manutenção?</div>
+        </div>
+        <div class="chat-input-area">
+          <input class="chat-input" id="chatInput" placeholder="Pergunte qualquer coisa sobre seus ganhos..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="chat-send" onclick="sendChat()"><i class="ti ti-send"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONQUISTAS -->
+    <div id="page-conquistas" class="page">
+      <div class="streak-card">
+        <div class="streak-num">🔥 12</div>
+        <div class="streak-info">
+          <h3>Dias seguidos usando o GiroCash!</h3>
+          <p>Continue assim para ganhar a medalha "Sequência Mestre" 🏆</p>
+        </div>
+      </div>
+
+      <div class="level-card">
+        <div class="level-badge">🚀<span>NÍV 4</span></div>
+        <div class="level-info" style="flex:1">
+          <h3>Motorista Profissional</h3>
+          <p>1.240 XP — próximo nível em 260 XP</p>
+          <div class="level-xp"><div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div></div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-bottom:12px">Suas conquistas</div>
+      <div class="ach-grid">
+        <div class="ach-card unlocked"><div class="ach-emoji">🚀</div><div class="ach-name">Primeiro Giro</div><div class="ach-desc">1º dia registrado</div><span class="ach-tag done">Conquistado</span></div>
+        <div class="ach-card unlocked"><div class="ach-emoji">📅</div><div class="ach-name">Semana Cheia</div><div class="ach-desc">7 dias seguidos</div><span class="ach-tag done">Conquistado</span></div>
+        <div class="ach-card unlocked"><div class="ach-emoji">💰</div><div class="ach-name">R$ 500 Líquido</div><div class="ach-desc">R$500 lucro em 1 semana</div><span class="ach-tag done">Conquistado</span></div>
+        <div class="ach-card unlocked"><div class="ach-emoji">🛣️</div><div class="ach-name">1.000 km</div><div class="ach-desc">1.000 km rodados</div><span class="ach-tag done">Conquistado</span></div>
+        <div class="ach-card locked"><div class="ach-emoji">🎯</div><div class="ach-name">Meta Batida</div><div class="ach-desc">Meta mensal atingida</div><span class="ach-tag locked">Em progresso</span></div>
+        <div class="ach-card locked"><div class="ach-emoji">💯</div><div class="ach-name">100 Corridas</div><div class="ach-desc">100 corridas registradas</div><span class="ach-tag locked">77/100</span></div>
+        <div class="ach-card locked"><div class="ach-emoji">📉</div><div class="ach-name">Economia</div><div class="ach-desc">Reduziu custo por km</div><span class="ach-tag locked">Bloqueado</span></div>
+        <div class="ach-card locked"><div class="ach-emoji">🏆</div><div class="ach-name">30 Dias Seguidos</div><div class="ach-desc">Sequência de 30 dias</div><span class="ach-tag locked">12/30</span></div>
+        <div class="ach-card locked"><div class="ach-emoji">⭐</div><div class="ach-name">Top da Semana</div><div class="ach-desc">Melhor resultado semanal</div><span class="ach-tag locked">Bloqueado</span></div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div id="page-perfil" class="page">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profileAvatar">MO</div>
+        <div>
+          <div class="profile-name" id="profileName">Motorista</div>
+          <div class="profile-meta" id="profileMeta">Toyota Corolla · São Carlos, SP</div>
+          <div class="profile-plan">Plano Pro ⚡ Ativo</div>
+        </div>
+      </div>
+      <div class="cards-grid">
+        <div class="stat-card green"><div class="card-icon green"><i class="ti ti-calendar"></i></div><div class="card-label">Dias Registrados</div><div class="card-value">28</div></div>
+        <div class="stat-card blue"><div class="card-icon blue"><i class="ti ti-road"></i></div><div class="card-label">Total km Rodados</div><div class="card-value">4.218 km</div></div>
+        <div class="stat-card green"><div class="card-icon green"><i class="ti ti-wallet"></i></div><div class="card-label">Lucro Total</div><div class="card-value">R$ 8.742</div></div>
+        <div class="stat-card warn"><div class="card-icon warn"><i class="ti ti-gas-station"></i></div><div class="card-label">Gasto Combustível</div><div class="card-value">R$ 1.840</div></div>
+      </div>
+      <div class="form-card">
+        <div class="section-title" style="margin-bottom:14px">Editar Perfil</div>
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Nome</label><input class="form-input" id="profileNameInput" placeholder="Seu nome completo"></div>
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="email@exemplo.com"></div>
+          <div class="form-group"><label class="form-label">Cidade</label><input class="form-input" placeholder="São Carlos, SP"></div>
+          <div class="form-group"><label class="form-label">Modelo do carro</label><input class="form-input" id="profileCarInput" placeholder="ex: Toyota Corolla"></div>
+          <div class="form-group"><label class="form-label">Meta mensal</label><input class="form-input" type="number" placeholder="R$ 5.000" id="profileMetaInput"></div>
+          <div class="form-group"><label class="form-label">Consumo médio (km/l)</label><input class="form-input" type="number" placeholder="ex: 12.5"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button class="btn-primary" style="max-width:160px" onclick="salvarPerfil()">Salvar perfil</button>
+          <button class="btn-secondary" onclick="logout()">Sair da conta</button>
+        </div>
+      </div>
+      <div style="margin-top:12px">
+        <div class="section-title" style="margin-bottom:12px">Planos disponíveis</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex-wrap:wrap">
+          <div style="background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:14px;font-weight:700;margin-bottom:6px">Grátis</div>
+            <div style="font-size:24px;font-weight:800;margin-bottom:6px">R$ 0</div>
+            <div style="font-size:12px;color:var(--gc-text3)">Registros básicos</div>
+          </div>
+          <div style="background:rgba(34,197,94,.08);border:2px solid rgba(34,197,94,.3);border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:11px;background:rgba(34,197,94,.2);color:var(--gc-green);border-radius:20px;padding:2px 8px;display:inline-block;margin-bottom:6px">Seu plano</div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:6px">Pro ⚡</div>
+            <div style="font-size:24px;font-weight:800;color:var(--gc-green);margin-bottom:6px">R$ 19,90</div>
+            <div style="font-size:12px;color:var(--gc-text3)">Relatórios + IA + Gamificação</div>
+          </div>
+          <div style="background:var(--gc-card);border:1px solid var(--gc-border);border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:14px;font-weight:700;margin-bottom:6px">Premium 💎</div>
+            <div style="font-size:24px;font-weight:800;margin-bottom:6px">R$ 39,90</div>
+            <div style="font-size:12px;color:var(--gc-text3)">Exportação + Alertas avançados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL MANUTENÇÃO -->
+<div id="modalMaint" class="modal-overlay hidden" onclick="hideModal(event,'modalMaint')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div style="font-size:16px;font-weight:600">Nova Manutenção</div>
+      <button style="background:transparent;border:none;cursor:pointer;font-size:20px;color:var(--gc-text2)" onclick="document.getElementById('modalMaint').classList.add('hidden')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Categoria</label>
+        <select class="form-select"><option>Troca de óleo</option><option>Pneus</option><option>Freios</option><option>Alinhamento</option><option>Balanceamento</option><option>Lavagem</option><option>Seguro</option><option>IPVA</option><option>Aluguel do carro</option><option>Outros</option></select>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Valor</label><input class="form-input" placeholder="R$ 0,00" type="number"></div>
+        <div class="form-group"><label class="form-label">Data</label><input class="form-input" type="date"></div>
+        <div class="form-group"><label class="form-label">Km atual</label><input class="form-input" placeholder="ex: 45.417" type="number"></div>
+        <div class="form-group"><label class="form-label">Próxima revisão (data)</label><input class="form-input" type="date"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Próxima revisão (km)</label><input class="form-input" placeholder="ex: 50.000 km" type="number"></div>
+      <div class="form-group"><label class="form-label">Observações</label><textarea class="form-input" rows="2" placeholder="Detalhes..."></textarea></div>
+    </div>
+    <div class="modal-footer"><button class="btn-ghost" onclick="document.getElementById('modalMaint').classList.add('hidden')">Cancelar</button><button class="btn-primary" style="width:auto;padding:10px 24px" onclick="document.getElementById('modalMaint').classList.add('hidden')">Salvar</button></div>
+  </div>
+</div>
+
+<!-- NOTIFICATION TOAST -->
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--gc-dark2);border:1px solid var(--gc-border);border-radius:10px;padding:12px 20px;font-size:14px;z-index:500;transition:transform .3s;white-space:nowrap"></div>
+
+<script>
+const state = {
+  currentPage: 'dashboard',
+  user: { name: 'Motorista', car: 'Toyota Corolla', city: 'São Carlos, SP' },
+  loggedIn: false,
+  chatHistory: [],
+  fuelType: 'Gasolina'
+};
+
+// Charts
+let chartWeekInst, chartPieInst, chartFuelInst, chartFinancasInst, chartMetaInst;
+
+function initCharts() {
+  const weekCtx = document.getElementById('chartWeek');
+  if(weekCtx && !chartWeekInst) {
+    chartWeekInst = new Chart(weekCtx, {
+      type:'bar',
+      data:{
+        labels:['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+        datasets:[
+          {label:'Lucro',data:[280,310,229,271,342,390,180],backgroundColor:'rgba(34,197,94,.7)',borderRadius:6},
+          {label:'Ganho Bruto',data:[412,445,380,398,487,560,280],type:'line',borderColor:'#3b82f6',borderDash:[5,5],borderWidth:2,fill:false,tension:.3,pointBackgroundColor:'#3b82f6',pointRadius:4}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b'},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#64748b',callback:v=>'R$'+v},grid:{color:'rgba(255,255,255,.04)'}}}}
+    });
+  }
+  const pieCtx = document.getElementById('chartPie');
+  if(pieCtx && !chartPieInst) {
+    chartPieInst = new Chart(pieCtx, {
+      type:'doughnut',
+      data:{labels:['Combustível','Manutenção','Outros'],datasets:[{data:[44,28,28],backgroundColor:['#f59e0b','#8b5cf6','#3b82f6'],borderWidth:0,hoverOffset:8}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}
+    });
+  }
+  const fuelCtx = document.getElementById('chartFuel');
+  if(fuelCtx && !chartFuelInst) {
+    chartFuelInst = new Chart(fuelCtx, {
+      type:'line',
+      data:{
+        labels:['01/04','08/04','15/04','22/04','29/04','06/05'],
+        datasets:[
+          {label:'Gasolina',data:[5.72,5.78,5.81,5.85,5.87,5.89],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.1)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:'#f59e0b'},
+          {label:'Etanol',data:[3.89,3.92,3.96,3.99,4.01,4.02],borderColor:'#22c55e',borderDash:[5,5],fill:false,tension:.3,pointRadius:5,pointBackgroundColor:'#22c55e'}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b'},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#64748b',callback:v=>'R$ '+v.toFixed(2)},grid:{color:'rgba(255,255,255,.04)'}}}}
+    });
+  }
+  const finCtx = document.getElementById('chartFinancas');
+  if(finCtx && !chartFinancasInst) {
+    const days = Array.from({length:6},(_,i)=>i+1+'Maio');
+    chartFinancasInst = new Chart(finCtx, {
+      type:'bar',
+      data:{
+        labels:['1','2','3','4','5','6'],
+        datasets:[
+          {label:'Receita',data:[412,398,380,452,487,0],backgroundColor:'rgba(34,197,94,.6)',borderRadius:4},
+          {label:'Gastos',data:[182,167,151,223,145,0],backgroundColor:'rgba(239,68,68,.6)',borderRadius:4},
+          {label:'Lucro',data:[230,231,229,229,342,0],type:'line',borderColor:'#3b82f6',borderDash:[5,5],borderWidth:2,fill:false,tension:.2,pointRadius:4,pointBackgroundColor:'#3b82f6'}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b'},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#64748b',callback:v=>'R$'+v},grid:{color:'rgba(255,255,255,.04)'}}}}
+    });
+  }
+  const metaCtx = document.getElementById('chartMeta');
+  if(metaCtx && !chartMetaInst) {
+    chartMetaInst = new Chart(metaCtx, {
+      type:'line',
+      data:{
+        labels:['1','5','10','15','20','25','31'],
+        datasets:[
+          {label:'Lucro Acumulado',data:[342,1650,2480,3100,3650,null,null],borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.08)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:'#22c55e'},
+          {label:'Meta',data:[806,1613,3226,3871,5000,5000,5000],borderColor:'#f59e0b',borderDash:[6,4],fill:false,tension:0,pointRadius:0,borderWidth:2}
+        ]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#64748b'},grid:{color:'rgba(255,255,255,.04)'}},y:{ticks:{color:'#64748b',callback:v=>'R$'+v},grid:{color:'rgba(255,255,255,.04)'}}}}
+    });
+  }
+}
+
+// Navigation
+function goTo(page, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const titles = {dashboard:'Dashboard',registro:'Registrar Dia',combustivel:'Combustível',manutencao:'Manutenção',financas:'Finanças',metas:'Metas',chat:'Copiloto IA',conquistas:'Conquistas',perfil:'Perfil'};
+  document.getElementById('pageTitle').textContent = titles[page]||page;
+  state.currentPage = page;
+  if(['dashboard','combustivel','financas','metas'].includes(page)) setTimeout(initCharts,100);
+  if(window.innerWidth<768) document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Login
+function showRegister() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.remove('hidden');
+}
+function showLogin() {
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('loginForm').classList.remove('hidden');
+}
+
+function doLogin() {
+  const name = document.getElementById('loginEmail').value || 'Motorista';
+  enterApp(name.split('@')[0]||'Motorista');
+}
+
+function doRegister() {
+  const name = document.getElementById('regNome').value || 'Motorista';
+  const car = document.getElementById('regCarro').value || 'Toyota Corolla';
+  const meta = document.getElementById('regMeta').value || '5000';
+  state.user = {name, car, city:'São Carlos, SP'};
+  enterApp(name, car);
+}
+
+function enterApp(name, car) {
+  state.loggedIn = true;
+  const initials = name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()||'MO';
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('appContainer').classList.remove('hidden');
+  document.getElementById('sidebarName').textContent = name;
+  document.getElementById('sidebarAvatar').textContent = initials;
+  document.getElementById('topAvatar').textContent = initials;
+  document.getElementById('profileAvatar').textContent = initials;
+  document.getElementById('profileName').textContent = name;
+  if(car) document.getElementById('profileMeta').textContent = car+' · São Carlos, SP';
+  setDate();
+  setTimeout(initCharts, 200);
+}
+
+function logout() {
+  document.getElementById('appContainer').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
+  showToast('Até logo! 👋');
+}
+
+function setDate() {
+  const d = new Date();
+  const days = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  document.getElementById('pageDate').textContent = days[d.getDay()]+', '+d.toLocaleDateString('pt-BR');
+  const inp = document.getElementById('regData');
+  if(inp) inp.value = d.toISOString().split('T')[0];
+}
+
+// Calcs
+function calcHoras() {
+  const ini = document.getElementById('regHoraIni').value;
+  const fim = document.getElementById('regHoraFim').value;
+  if(ini && fim) {
+    const [h1,m1] = ini.split(':').map(Number);
+    const [h2,m2] = fim.split(':').map(Number);
+    const mins = (h2*60+m2) - (h1*60+m1);
+    if(mins>0) document.getElementById('regHoras').value = Math.floor(mins/60)+'h '+((mins%60)||0)+'m';
+  }
+}
+
+function calcKm() {
+  const ini = parseFloat(document.getElementById('regKmIni').value)||0;
+  const fim = parseFloat(document.getElementById('regKmFim').value)||0;
+  const km = fim > ini ? fim - ini : 0;
+  document.getElementById('calcKm').textContent = km+' km';
+  calcLucro();
+}
+
+function calcLucro() {
+  const ganho = parseFloat(document.getElementById('regGanho').value)||0;
+  const estimFuel = ganho * 0.18;
+  const lucro = ganho - estimFuel;
+  const km = parseInt(document.getElementById('calcKm').textContent)||0;
+  document.getElementById('calcLucro').textContent = 'R$ '+lucro.toFixed(0);
+  document.getElementById('calcKmLucro').textContent = km>0 ? 'R$ '+(lucro/km).toFixed(2)+'/km' : '—';
+}
+
+function calcFuel() {
+  const litros = parseFloat(document.getElementById('fuelLitros').value)||0;
+  const preco = parseFloat(document.getElementById('fuelPreco').value)||0;
+  const total = litros * preco;
+  document.getElementById('fuelTotal').textContent = 'R$ '+total.toFixed(2);
+  const medUlt = 10.8;
+  if(litros>0) document.getElementById('fuelMedia').textContent = medUlt+' km/l';
+  if(preco>0) document.getElementById('fuelCustoKm').textContent = 'R$ '+(preco/medUlt).toFixed(3)+'/km';
+}
+
+function setFuel(btn) {
+  document.querySelectorAll('.fuel-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  state.fuelType = btn.textContent.trim().replace(/^.+\s/,'');
+}
+
+function salvarDia() { showToast('✅ Dia registrado com sucesso!'); }
+function salvarAbastecimento() { showToast('⛽ Abastecimento registrado!'); }
+function salvarPerfil() { showToast('✅ Perfil atualizado!'); }
+
+// Tabs
+function setTab(btn, tabId) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  ['tab-dia','tab-sem','tab-mes'].forEach(t=>{
+    const el = document.getElementById(t);
+    if(el) el.classList.toggle('hidden', t!==tabId);
+  });
+}
+
+// Modal
+function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function hideModal(e, id) { if(e.target===e.currentTarget) document.getElementById(id).classList.add('hidden'); }
+
+// Toast
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.transform = 'translateX(-50%) translateY(0)';
+  setTimeout(()=>{ t.style.transform = 'translateX(-50%) translateY(80px)'; },3000);
+}
+
+// CHAT IA
+const chatResponses = {
+  'valeu a pena': '✅ SIM! Hoje seu lucro foi de **R$ 342**, que representa 70% do ganho bruto — acima da sua média de 65%. Você teve um ótimo desempenho hoje! 🎉',
+  'custo por km': '📍 Seu custo por km hoje foi de **R$ 0,76/km**. Isso inclui combustível + manutenção proporcional. Sua média da semana é R$ 0,82/km. Você melhorou!',
+  'meta': '🎯 Faltam **R$ 1.350** para bater sua meta de R$ 5.000. Com base na sua média de R$ 304/dia, você precisa de mais **4,5 dias** para alcançar a meta!',
+  'melhor dia': '🏆 Seu melhor dia desta semana foi **sábado** com R$ 390 de lucro. O sábado à noite costuma ser mais lucrativo para você. Que tal focar mais nesse horário?',
+  'gasolina': '⛽ Seus gastos com combustível estão em **17,4%** do ganho bruto hoje. A média saudável é até 20%. Você está dentro do limite, mas o preço subiu R$ 0,04 desde semana passada.',
+  'manutencao': '🔧 Atenção: seus **pneus** estão com manutenção atrasada! Além disso, a revisão de freios vence em 2 meses. Recomendo agendar ambos para não comprometer sua segurança.',
+  'lucro': '📊 Seu lucro está **crescendo**! Comparando com a semana passada: +8%. Nos últimos 7 dias seu lucro total foi de R$ 2.002. Continue assim! 🚀'
+};
+
+function getChatResponse(msg) {
+  const m = msg.toLowerCase();
+  for(const [key, resp] of Object.entries(chatResponses)) {
+    if(m.includes(key)) return resp;
+  }
+  return '🤔 Baseado nos seus dados: hoje você rodou 187 km, ganhou R$ 487 bruto e ficou com R$ 342 líquido. Lucro/km: R$ 1,83. Posso detalhar qualquer um desses números para você!';
+}
+
+function sendQuestion(q) {
+  document.getElementById('chatInput').value = q;
+  sendChat();
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  const msgs = document.getElementById('chatMessages');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg msg-user';
+  userMsg.textContent = msg;
+  msgs.appendChild(userMsg);
+  input.value = '';
+  const typing = document.createElement('div');
+  typing.className = 'msg msg-bot';
+  typing.innerHTML = '<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(()=>{
+    typing.innerHTML = getChatResponse(msg);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1200);
+}
+
+// Init
+setDate();
+</script>
+</body>
+</html>
