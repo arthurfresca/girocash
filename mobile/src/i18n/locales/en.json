@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "workdays": "Log Day",
+    "fuel": "Fuel",
+    "goals": "Goals",
+    "profile": "Profile"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "today": "Today",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "grossEarnings": "Gross Earnings",
+    "netProfit": "Net Profit",
+    "kmDriven": "Km Driven",
+    "hoursWorked": "Hours Worked",
+    "fuelCost": "Fuel",
+    "rideCount": "Rides"
+  },
+  "workdays": {
+    "title": "Workdays",
+    "date": "Date",
+    "gross": "Gross",
+    "net": "Net",
+    "km": "Km",
+    "rides": "Rides",
+    "platform": "Platform"
+  },
+  "fuel": {
+    "title": "Fuel",
+    "date": "Date",
+    "type": "Type",
+    "liters": "Liters",
+    "total": "Total",
+    "station": "Station"
+  },
+  "goals": {
+    "title": "Goals",
+    "target": "Target",
+    "current": "Current",
+    "deadline": "Deadline",
+    "completed": "Completed",
+    "inProgress": "In progress"
+  },
+  "profile": {
+    "title": "Profile",
+    "level": "Level",
+    "xp": "XP",
+    "streak": "Streak",
+    "days": "days",
+    "platform": "Platform",
+    "vehicle": "Vehicle",
+    "plan": "Plan"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Failed to load",
+    "currency": "R$"
+  }
+}

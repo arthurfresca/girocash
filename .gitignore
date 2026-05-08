@@ -7,3 +7,24 @@
 
 # Windows
 Thumbs.db
+
+# Go
+api/vendor/
+api/*.exe
+
+# Node / Next.js
+web/node_modules/
+web/.next/
+web/.env.local
+
+# Expo / React Native
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/.env
+
+# Docker
+.env
+
+# Postgres
+postgres_data/

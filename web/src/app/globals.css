@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gc-dark: #0f172a;
+  --gc-dark2: #1e293b;
+  --gc-dark3: #334155;
+  --gc-green: #22c55e;
+  --gc-blue: #3b82f6;
+  --gc-text: #f1f5f9;
+  --gc-text2: #94a3b8;
+  --gc-text3: #8b9eb5;
+  --gc-border: #334155;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

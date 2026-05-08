@@ -1,0 +1,61 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "workdays": "Registrar Dia",
+    "fuel": "Combustível",
+    "goals": "Metas",
+    "profile": "Perfil"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "today": "Hoje",
+    "thisWeek": "Esta Semana",
+    "thisMonth": "Este Mês",
+    "grossEarnings": "Faturamento Bruto",
+    "netProfit": "Lucro Líquido",
+    "kmDriven": "Km Rodados",
+    "hoursWorked": "Horas Trabalhadas",
+    "fuelCost": "Combustível",
+    "rideCount": "Corridas"
+  },
+  "workdays": {
+    "title": "Dias Trabalhados",
+    "date": "Data",
+    "gross": "Bruto",
+    "net": "Líquido",
+    "km": "Km",
+    "rides": "Corridas",
+    "platform": "Plataforma"
+  },
+  "fuel": {
+    "title": "Combustível",
+    "date": "Data",
+    "type": "Tipo",
+    "liters": "Litros",
+    "total": "Total",
+    "station": "Posto"
+  },
+  "goals": {
+    "title": "Metas",
+    "target": "Meta",
+    "current": "Atual",
+    "deadline": "Prazo",
+    "completed": "Concluída",
+    "inProgress": "Em andamento"
+  },
+  "profile": {
+    "title": "Perfil",
+    "level": "Nível",
+    "xp": "XP",
+    "streak": "Streak",
+    "days": "dias",
+    "platform": "Plataforma",
+    "vehicle": "Veículo",
+    "plan": "Plano"
+  },
+  "common": {
+    "loading": "Carregando...",
+    "error": "Erro ao carregar",
+    "currency": "R$"
+  }
+}
